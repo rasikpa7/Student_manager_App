@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:student_manager/Screens/seacrchScreen/search_display.dart';
 import 'package:student_manager/Screens/studentViewScreen/StudentDetailsScreen.dart';
 import 'package:student_manager/model/StudentModel.dart';
 
@@ -44,8 +45,8 @@ class CustomSearchDelegate extends SearchDelegate {
               StudentDB result = matchQuery[index];
               return ListTile(onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => StudentDetailsScreen(
-                                  index: index,
+                                builder: (context) => SearchDetailsScreen(
+                                 result: result,
                                 ),
                               ),
                             ),
@@ -84,8 +85,8 @@ class CustomSearchDelegate extends SearchDelegate {
               
                   child: ListTile(onTap: () => Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => StudentDetailsScreen(
-                                      index: index,
+                                    builder: (context) => SearchDetailsScreen(result: result,
+                                    
                                     ),
                                   ),
                                 ),

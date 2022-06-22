@@ -20,27 +20,12 @@ SizedBox kWidth20() =>const  SizedBox(
           ),
           filled: true,
           hintStyle: TextStyle(color: Colors.grey[800]),
-          hintText: text,
+         hintText: text,
           fillColor: Colors.white),
     );
   }
 
-  //  SetControlle1r(String hintText){
 
-  //   switch(hintText){
-  //     case 'Student Name':
-  //     return StudentNameController;
-  //       case 'Student Age':
-  //     return StudentNameController;
-  //       case 'Student Batch':
-  //     return StudentNameController;
-  //       case 'tudent Place':
-  //     return StudentNameController;
-    
-  //   default:[];
-  //   }
-    
-  // }
   
 
 

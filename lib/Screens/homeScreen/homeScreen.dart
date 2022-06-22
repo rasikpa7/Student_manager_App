@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:student_manager/Screens/homeScreen/widgets/widgets.dart';
 import 'package:student_manager/Screens/studentListScreem/stundentListScreen.dart';
@@ -63,10 +64,12 @@ class MyHomePage extends StatelessWidget {
             children: [
               kHeight20,
                Center(
-                child: imagepath == null ?const CircleAvatar(
-                  backgroundImage: NetworkImage('https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png'),
+                child: imagepath == null ? CircleAvatar(
+                 child: ClipRRect(child: Lottie.network('https://assets3.lottiefiles.com/packages/lf20_gsiJ2w.json',fit: BoxFit.cover,)),
+                 
                   radius: 70,
-                ):CircleAvatar(
+                ):
+                CircleAvatar(
              
                   backgroundImage: FileImage(File(imagepath!))
                ,
@@ -92,7 +95,7 @@ class MyHomePage extends StatelessWidget {
                       if (image == null) {
                        imagepath==null;
                       } else {
-                        imagepath = image.path;
+                        imagepath =Provider.of<ProfileImageProvider>(context,listen: false).changeImage(image: image.path);
                       }
                     },
                     icon: Icon(Icons.photo),
@@ -112,6 +115,11 @@ class MyHomePage extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () async {
                       _onAddStudentBtnclicked(context);
+                      StudentNameController.clear();
+                      StudentAgeController.clear();
+                      StudentBatchController.clear();
+                      StudentPlaceController.clear();
+                      imagepath=Provider.of<ProfileImageProvider>(context,listen: false).changeImage(image:null);
                     },
                     child:const Text('Submit Form'))
               ])
@@ -150,7 +158,9 @@ class MyHomePage extends StatelessWidget {
         backgroundColor: Colors.green,
         content: Text('Form submited'),
         duration: Duration(milliseconds: 300),
+
       ));
+      StudentNameController.clear();
     }
   }
 }

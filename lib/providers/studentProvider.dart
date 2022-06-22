@@ -6,7 +6,7 @@ import 'package:student_manager/model/StudentModel.dart';
 
 class StudentProvider extends ChangeNotifier{
   final studentBox = Hive.box<StudentDB>('student');
- 
+
   void addStudent(StudentDB student){
    
     studentBox.add(student);

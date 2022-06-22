@@ -9,6 +9,7 @@ import 'package:student_manager/providers/profileImageProvider.dart';
 import 'package:student_manager/providers/studentProvider.dart';
 
 class EditStudentList extends StatelessWidget {
+
   var imagepath;
   int index;
   EditStudentList({
@@ -31,6 +32,7 @@ class EditStudentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      var nameStudent=studentList[index].name;
     imagepath=Provider.of<ProfileImageProvider>(context).image;
     return SingleChildScrollView(
       child: Column(

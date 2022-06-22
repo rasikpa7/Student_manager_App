@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -20,15 +21,16 @@ class StudentListScreen extends StatelessWidget {
   StudentListScreen({Key? key}) : super(key: key);
 //  List<StudentDB> studentresult=studentProvider().student.values.toList();
 // final studentList = Hive.box<StudentDB>('student').values.toList();
-  TextEditingController StudentNameController = TextEditingController();
-  TextEditingController StudentAgeController = TextEditingController();
-  TextEditingController StudentBatchController = TextEditingController();
-  TextEditingController StudentPlaceController = TextEditingController();
+ 
   final ImagePicker _picker = ImagePicker();
   var imagepath;
   static const routeName = '/student-list';
   @override
   Widget build(BuildContext context) {
+     TextEditingController StudentNameController ;
+  TextEditingController StudentAgeController ;
+  TextEditingController StudentBatchController ;
+  TextEditingController StudentPlaceController ;
       imagepath=Provider.of<ProfileImageProvider>(context).image;
     final student = Provider.of<StudentProvider>(context).studentBox;
             final studentList = student.values.toList();
@@ -79,6 +81,7 @@ class StudentListScreen extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => StudentDetailsScreen(
                                   index: index,
+                                  
                                 ),
                               ),
                             ),
@@ -117,13 +120,13 @@ class StudentListScreen extends StatelessWidget {
                                               studentList: studentList,
                                               kheight: kheight,
                                               StudentNameController:
-                                                  StudentNameController,
+                                                  StudentNameController=TextEditingController(text: studentList[index].name),
                                               StudentAgeController:
-                                                  StudentAgeController,
+                                                  StudentAgeController=TextEditingController(text: studentList[index].age),
                                               StudentBatchController:
-                                                  StudentBatchController,
+                                                  StudentBatchController=TextEditingController(text: studentList[index].batch),
                                               StudentPlaceController:
-                                                  StudentPlaceController,
+                                                  StudentPlaceController=TextEditingController(text: studentList[index].Place),
                                               index: index,
                                             ),
                                             actions: [
@@ -140,7 +143,8 @@ class StudentListScreen extends StatelessWidget {
                                                       return;
                                                 
                                                     } else {
-                                                      imagepath = image.path;
+                                                      imagepath = Provider.of<ProfileImageProvider>(context,listen: false).changeImage(image: image.path)
+                                                      ;
                                                     }
                                                   },
                                                   icon:const Icon(Icons.photo),
@@ -164,8 +168,50 @@ class StudentListScreen extends StatelessWidget {
                                                   label:const  Text('')),
                                               ElevatedButton(
                                                   onPressed: () {
-                                                    _onUpdateStudentBtnclicked(
-                                                        context, index);
+                                                    ////
+                                                    ///
+                                                    ///
+
+
+
+
+                                                   final _name = StudentNameController.text.trim();
+    final _age = StudentAgeController.text.trim();
+    final _batch = StudentBatchController.text.trim();
+    final _place = StudentPlaceController.text.trim();
+    final _image = imagepath;
+    if (_name.isEmpty || _age.isEmpty || _batch.isEmpty || _place.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('All Field is required'),
+        duration: Duration(milliseconds: 300),
+      ));
+    } else {
+      final _student = StudentDB(
+          name: _name,
+          age: _age,
+          batch: _batch,
+          Place: _place,
+          image: imagepath);
+      Provider.of<StudentProvider>(context, listen: false)
+          .editStudent(_student, index);
+      ScaffoldMessenger.of(context).showSnackBar(
+       const  SnackBar(
+        backgroundColor: Colors.green,
+        content: Text('Form Updated'),
+        duration: Duration(milliseconds: 300),
+      ));
+      Navigator.of(context).pop();
+    }
+
+
+
+
+
+    ///
+    ///
+    ///
+    ///
                                                   },
                                                   child: const  Text('submit'))
                                                 ],
@@ -202,33 +248,6 @@ class StudentListScreen extends StatelessWidget {
 
   Future<void> _onUpdateStudentBtnclicked(
       BuildContext context, int index) async {
-    final _name = StudentNameController.text.trim();
-    final _age = StudentAgeController.text.trim();
-    final _batch = StudentBatchController.text.trim();
-    final _place = StudentPlaceController.text.trim();
-    final _image = imagepath;
-    if (_name.isEmpty || _age.isEmpty || _batch.isEmpty || _place.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.red,
-        content: Text('All Field is required'),
-        duration: Duration(milliseconds: 300),
-      ));
-    } else {
-      final _student = StudentDB(
-          name: _name,
-          age: _age,
-          batch: _batch,
-          Place: _place,
-          image: imagepath);
-      Provider.of<StudentProvider>(context, listen: false)
-          .editStudent(_student, index);
-      ScaffoldMessenger.of(context).showSnackBar(
-       const  SnackBar(
-        backgroundColor: Colors.green,
-        content: Text('Form Updated'),
-        duration: Duration(milliseconds: 300),
-      ));
-      Navigator.of(context).pop();
-    }
+   
   }
 }
